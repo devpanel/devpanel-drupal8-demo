@@ -1,4 +1,4 @@
-FROM wodby/drupal-php:7.4
+FROM busybox
 
 WORKDIR /app
 COPY . .
