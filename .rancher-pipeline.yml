@@ -5,14 +5,15 @@ stages:
       dockerfilePath: ./Dockerfile
       buildContext: .
       tag: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}
-      registry: 127.0.0.1:34939
+      remote: true
+      registry: 675872011311.dkr.ecr.us-east-2.amazonaws.com
 - name: deploy
   steps:
   - applyAppConfig:
       catalogTemplate: cattle-global-data:devpanel-catalog-php-fpm
       version: 1.0.2
       answers:
-        image.registry: docker-registry.p-dgk2h-pipeline:34939
+        image.registry: docker-registry:34939
         image.repository: ${CICD_GIT_REPO_NAME}
         image.tag: ${CICD_GIT_BRANCH}
       name: ${CICD_GIT_REPO_NAME}-${CICD_GIT_BRANCH}
