@@ -1,0 +1,18 @@
+stages:
+- name: build
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./Dockerfile
+      buildContext: .
+      tag: rancher-d8-demo/${CICD_EXECUTION_SEQUENCE}
+      pushRemote: true
+      registry: 127.0.0.1:34939
+- name: deploy
+  steps:
+  - applyAppConfig:
+      catalogTemplate: cattle-global-data:devpanel-catalog-php-fpm
+      version: 1.0.2
+      name: d8-demo
+      targetNamespace: default
+timeout: 60
+notification: {}
