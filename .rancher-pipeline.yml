@@ -10,6 +10,10 @@ stages:
   - applyAppConfig:
       catalogTemplate: cattle-global-data:devpanel-catalog-php-fpm
       version: 1.0.2
+      answers:
+        image.registry: ${CICD_REGISTRY}
+        image.repository: ${CICD_GIT_REPO_NAME}
+        image.tag: ${CICD_EXECUTION_SEQUENCE}
       name: ${CICD_GIT_REPO_NAME}-${CICD_GIT_BRANCH}
       targetNamespace: default
 timeout: 60
