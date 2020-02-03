@@ -6,7 +6,7 @@ stages:
       buildContext: .
       tag: rancher-d8-demo/${CICD_EXECUTION_SEQUENCE}
       pushRemote: true
-      registry: 127.0.0.1:34939
+      registry: 675872011311.dkr.ecr.us-east-2.amazonaws.com
 - name: deploy
   steps:
   - applyAppConfig:
