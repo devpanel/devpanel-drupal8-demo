@@ -4,15 +4,13 @@ stages:
   - publishImageConfig:
       dockerfilePath: ./Dockerfile
       buildContext: .
-      tag: rancher-d8-demo/${CICD_EXECUTION_SEQUENCE}
-      pushRemote: true
-      registry: 675872011311.dkr.ecr.us-east-2.amazonaws.com
+      tag: ${CICD_GIT_REPO_NAME}/${CICD_EXECUTION_SEQUENCE}
 - name: deploy
   steps:
   - applyAppConfig:
       catalogTemplate: cattle-global-data:devpanel-catalog-php-fpm
       version: 1.0.2
-      name: d8-demo
+      name: ${CICD_GIT_REPO_NAME}-${CICD_GIT_BRANCH}
       targetNamespace: default
 timeout: 60
 notification: {}
