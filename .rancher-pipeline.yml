@@ -14,6 +14,7 @@ stages:
         image.registry: 127.0.0.1:34305
         image.repository: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}
         image.tag: ${CICD_GIT_COMMIT}
+        app.isdev: true
       name: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
       targetNamespace: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
 timeout: 60
