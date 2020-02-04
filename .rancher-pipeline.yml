@@ -4,7 +4,7 @@ stages:
   - publishImageConfig:
       dockerfilePath: ./Dockerfile
       buildContext: .
-      tag: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}
+      tag: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}:${CICD_GIT_COMMIT}
 - name: deploy
   steps:
   - applyAppConfig:
@@ -13,7 +13,7 @@ stages:
       answers:
         image.registry: 127.0.0.1:34305
         image.repository: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}
-        image.tag: latest
+        image.tag: ${CICD_GIT_COMMIT}
       name: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
       targetNamespace: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
 timeout: 60
