@@ -15,7 +15,12 @@ stages:
         image.repository: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}
         image.tag: ${CICD_GIT_COMMIT}
         app.isdev: true
+        database.enabled: true
+        database.host: devpanel-demo.c5aauapfpgyn.us-east-2.rds.amazonaws.com
+        database.user: root
+        database.password: CXVAmXRgEhE85x
         database.database: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
+        port: 3306
       name: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
       targetNamespace: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
 timeout: 60
