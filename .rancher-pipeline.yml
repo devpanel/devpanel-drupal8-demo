@@ -5,17 +5,15 @@ stages:
       dockerfilePath: ./Dockerfile
       buildContext: .
       tag: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}
-      pushRemote: false
-      registry: 675872011311.dkr.ecr.us-east-2.amazonaws.com
 - name: deploy
   steps:
   - applyAppConfig:
       catalogTemplate: cattle-global-data:devpanel-catalog-php-fpm
       version: 1.0.2
       answers:
-        image.registry: 675872011311.dkr.ecr.us-east-2.amazonaws.com
-        image.repository: ${CICD_GIT_REPO_NAME}
-        image.tag: ${CICD_GIT_BRANCH}
+        image.registry: docker-registry.p-56lsx-pipeline
+        image.repository: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}
+        image.tag: latest
       name: ${CICD_GIT_REPO_NAME}-${CICD_GIT_BRANCH}
       targetNamespace: default
 timeout: 60
