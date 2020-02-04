@@ -11,7 +11,7 @@ stages:
       catalogTemplate: cattle-global-data:devpanel-catalog-php-fpm
       version: 1.0.2
       answers:
-        image.registry: docker-registry.p-56lsx-pipeline
+        image.registry: 127.0.0.1:34305
         image.repository: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}
         image.tag: latest
       name: ${CICD_GIT_REPO_NAME}-${CICD_GIT_BRANCH}
