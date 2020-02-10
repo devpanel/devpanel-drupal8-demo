@@ -8,8 +8,9 @@ stages:
 - name: deploy
   steps:
   - runScriptConfig:
-      image: busybox
-      shellScript: echo ${DB_HOST}
+      image: mysql:5.7
+      shellScript: |
+        mysql --host ${DB_HOST} --password ${DB_PASS} --user ${DB_USER} -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}"
     envFrom:
     - sourceName: rds-mysql-root
       sourceKey: host
