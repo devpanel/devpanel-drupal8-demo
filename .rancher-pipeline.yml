@@ -12,16 +12,16 @@ stages:
       shellScript: mysql --host=${DB_HOST} --password=${DB_PASS} --user="${DB_PASS}"
         --port=3306 -e "CREATE DATABASE IF NOT EXISTS ${CICD_PIPELINE_ID}_${CICD_GIT_BRANCH}"
     envFrom:
-    - sourceName: rds-mysql-root
+    - sourceName: ns-qzchs
       sourceKey: host
       targetKey: DB_HOST
-    - sourceName: rds-mysql-root
+    - sourceName: ns-qzchs
       sourceKey: port
       targetKey: DB_PORT
-    - sourceName: rds-mysql-root
+    - sourceName: ns-qzchs
       sourceKey: pass
       targetKey: DB_PASS
-    - sourceName: rds-mysql-root
+    - sourceName: ns-qzchs
       sourceKey: user
       targetKey: DB_USER
   - applyAppConfig:
