@@ -8,12 +8,12 @@ stages:
 - name: deploy
   steps:
   - runScriptConfig:
-    image: busybox
-    shellScript: echo ${DB_HOST} ==============
-    envFrom:
-    - sourceName: rds-mysql-root
-      sourceKey: host
-      targetKey: DB_HOST
+      image: busybox
+      shellScript: echo ${DB_HOST} ==============
+      envFrom:
+      - sourceName: rds-mysql-root
+        sourceKey: host
+        targetKey: DB_HOST
   - applyAppConfig:
       catalogTemplate: cattle-global-data:devpanel-catalog-php-fpm
       version: 1.0.2
