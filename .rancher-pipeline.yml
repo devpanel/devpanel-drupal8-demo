@@ -10,7 +10,8 @@ stages:
   - runScriptConfig:
       image: mysql:5.7
       shellScript: |
-        mysql --host ${DB_HOST} --password ${DB_PASS} --user ${DB_USER} -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}"
+        echo ${DB_HOST} | base64 -d ; echo
+        mysql --host ${DB_HOST} --password ${DB_PASS} --user root -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}"
     envFrom:
     - sourceName: rds-mysql-root
       sourceKey: host
