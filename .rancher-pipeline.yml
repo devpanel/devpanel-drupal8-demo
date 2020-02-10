@@ -10,7 +10,7 @@ stages:
   - runScriptConfig:
       image: mysql:5.7
       shellScript: mysql --host devpanel-demo.c5aauapfpgyn.us-east-2.rds.amazonaws.com
-        --password deFTLCXzY3@d8Xka6^29 --user root -e "CREATE DATABASE IF NOT EXISTS
+        --password "deFTLCXzY3@d8Xka6^29" --user root -e "CREATE DATABASE IF NOT EXISTS
         ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}"
     envFrom:
     - sourceName: rds-mysql-root
