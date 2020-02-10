@@ -9,7 +9,7 @@ stages:
   steps:
   - runScriptConfig:
       image: busybox
-      shellScript: print ${DB_HOST}
+      shellScript: echo ${DB_HOST}
     envFrom:
     - sourceName: rds-mysql-root
       sourceKey: host
