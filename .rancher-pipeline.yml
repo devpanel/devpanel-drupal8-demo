@@ -10,20 +10,29 @@ stages:
   - runScriptConfig:
       image: busybox
       shellScript: printenv | more
-      envFrom:
-      - sourceName: rds-mysql-root-pipeline
-        sourceKey: port
-        targetKey: DB_HOST
+    envFrom:
+    - sourceName: rds-mysql-root
+      sourceKey: host
+      targetKey: DB_HOST
+    - sourceName: rds-mysql-root
+      sourceKey: port
+      targetKey: DB_PORT
+    - sourceName: rds-mysql-root
+      sourceKey: pass
+      targetKey: DB_PASS
+    - sourceName: rds-mysql-root
+      sourceKey: user
+      targetKey: DB_USER
   - applyAppConfig:
       catalogTemplate: cattle-global-data:devpanel-catalog-php-fpm
       version: 1.0.2
       answers:
+        app.isdev: "true"
+        database.enabled: "false"
         image.registry: 127.0.0.1:34305
         image.repository: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}
         image.tag: ${CICD_GIT_COMMIT}
-        app.isdev: true
-        database.enabled: false
-        port: 3306
+        port: "3306"
       name: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
       targetNamespace: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
 timeout: 60
