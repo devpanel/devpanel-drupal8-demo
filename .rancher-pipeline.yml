@@ -11,7 +11,7 @@ stages:
       image: busybox
       shellScript: printenv | more
       envFrom:
-      - sourceName: rds-mysql-root
+      - sourceName: rds-mysql-root-pipeline
         sourceKey: port
         targetKey: DB_HOST
   - applyAppConfig:
