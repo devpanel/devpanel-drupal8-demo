@@ -9,10 +9,10 @@ stages:
   steps:
   - runScriptConfig:
       image: busybox
-      shellScript: echo ${DB_HOST} ==============
+      shellScript: printenv | more
       envFrom:
       - sourceName: rds-mysql-root
-        sourceKey: host
+        sourceKey: port
         targetKey: DB_HOST
   - applyAppConfig:
       catalogTemplate: cattle-global-data:devpanel-catalog-php-fpm
