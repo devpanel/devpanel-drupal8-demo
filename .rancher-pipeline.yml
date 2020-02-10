@@ -7,6 +7,13 @@ stages:
       tag: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}:${CICD_GIT_COMMIT}
 - name: deploy
   steps:
+  - runScriptConfig:
+    image: busybox
+    shellScript: echo ${DB_HOST} ==============
+    envFrom:
+    - sourceName: rds-mysql-root
+      sourceKey: host
+      targetKey: DB_HOST
   - applyAppConfig:
       catalogTemplate: cattle-global-data:devpanel-catalog-php-fpm
       version: 1.0.2
