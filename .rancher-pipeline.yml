@@ -10,10 +10,10 @@ stages:
   - runScriptConfig:
       image: mysql:5.7
       shellScript: |-
-        mysql -h ${MYSQL_HOST} -u ${USER} -p ${MYSQL_PWD} -P ${MYSQL_TCP_PORT} -e "CREATE DATABASE IF NOT EXISTS master"
-        mysqldump -h ${MYSQL_HOST} -u ${USER} -p ${MYSQL_PWD} -P ${MYSQL_TCP_PORT} --no-create-db master > /tmp/export.sql
-        mysql -h ${MYSQL_HOST} -u ${USER} -p ${MYSQL_PWD} -P ${MYSQL_TCP_PORT} -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_BRANCH}"
-        mysql -h ${MYSQL_HOST} -u ${USER} -p ${MYSQL_PWD} -P ${MYSQL_TCP_PORT} ${CICD_GIT_BRANCH} < /tmp/export.sql
+        mysql -h ${MYSQL_HOST} -u ${MYSQL_USER} -p ${MYSQL_PWD} -P ${MYSQL_TCP_PORT} -e "CREATE DATABASE IF NOT EXISTS master"
+        mysqldump -h ${MYSQL_HOST} -u ${MYSQL_USER} -p ${MYSQL_PWD} -P ${MYSQL_TCP_PORT} --no-create-db master > /tmp/export.sql
+        mysql -h ${MYSQL_HOST} -u ${MYSQL_USER} -p ${MYSQL_PWD} -P ${MYSQL_TCP_PORT} -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_BRANCH}"
+        mysql -h ${MYSQL_HOST} -u ${MYSQL_USER} -p ${MYSQL_PWD} -P ${MYSQL_TCP_PORT} ${CICD_GIT_BRANCH} < /tmp/export.sql
     envFrom:
     - sourceName: ns-qzchs
       sourceKey: host
@@ -26,7 +26,7 @@ stages:
       targetKey: MYSQL_PWD
     - sourceName: ns-qzchs
       sourceKey: user
-      targetKey: USER
+      targetKey: MYSQL_USER
   - applyAppConfig:
       catalogTemplate: cattle-global-data:devpanel-catalog-php-fpm
       version: 1.0.3
