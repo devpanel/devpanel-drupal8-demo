@@ -15,16 +15,16 @@ stages:
         mysql -h ${MYSQL_HOST} -u ${USER} -p ${MYSQL_PWD} -P ${MYSQL_TCP_PORT} -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_BRANCH}"
         mysql -h ${MYSQL_HOST} -u ${USER} -p ${MYSQL_PWD} -P ${MYSQL_TCP_PORT} ${CICD_GIT_BRANCH} < /tmp/export.sql
     envFrom:
-    - sourceName: rds-mysql-root
+    - sourceName: ns-qzchs
       sourceKey: host
       targetKey: MYSQL_HOST
-    - sourceName: rds-mysql-root
+    - sourceName: ns-qzchs
       sourceKey: port
       targetKey: MYSQL_TCP_PORT
-    - sourceName: rds-mysql-root
+    - sourceName: ns-qzchs
       sourceKey: pass
       targetKey: MYSQL_PWD
-    - sourceName: rds-mysql-root
+    - sourceName: ns-qzchs
       sourceKey: user
       targetKey: USER
   - applyAppConfig:
