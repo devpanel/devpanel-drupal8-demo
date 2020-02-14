@@ -9,21 +9,24 @@ stages:
   steps:
   - runScriptConfig:
       image: mysql:5.7
-      shellScript: mysql --host=${DB_HOST} --password=${DB_PASS} --user="${DB_USER}"
-        --port=3306 -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_BRANCH}"
+      shellScript:
+        - mysql -e "CREATE DATABASE IF NOT EXISTS master"
+        - mysqldump --no-create-db master > /tmp/export.sql
+        - mysql -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_BRANCH}"
+        - mysql ${CICD_GIT_BRANCH} < /tmp/export.sql
     envFrom:
     - sourceName: rds-mysql-root
       sourceKey: host
-      targetKey: DB_HOST
+      targetKey: MYSQL_HOST
     - sourceName: rds-mysql-root
       sourceKey: port
-      targetKey: DB_PORT
+      targetKey: MYSQL_TCP_PORT
     - sourceName: rds-mysql-root
       sourceKey: pass
-      targetKey: DB_PASS
+      targetKey: MYSQL_PWD
     - sourceName: rds-mysql-root
       sourceKey: user
-      targetKey: DB_USER
+      targetKey: USER
   - applyAppConfig:
       catalogTemplate: cattle-global-data:devpanel-catalog-php-fpm
       version: 1.0.3
