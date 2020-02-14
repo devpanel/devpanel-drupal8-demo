@@ -9,7 +9,7 @@ stages:
   steps:
   - runScriptConfig:
       image: mysql:5.7
-      shellScript: mysql --host=${DB_HOST} --password=${DB_PASS} --user="${DB_PASS}"
+      shellScript: mysql --host=${DB_HOST} --password=${DB_PASS} --user="${DB_USER}"
         --port=3306 -e "CREATE DATABASE IF NOT EXISTS ${CICD_PIPELINE_ID}_${CICD_GIT_BRANCH}"
     envFrom:
     - sourceName: ns-qzchs
