@@ -10,18 +10,18 @@ stages:
   - runScriptConfig:
       image: mysql:5.7
       shellScript: mysql --host=${DB_HOST} --password=${DB_PASS} --user="${DB_USER}"
-        --port=3306 -e "CREATE DATABASE IF NOT EXISTS ${CICD_PIPELINE_ID}_${CICD_GIT_BRANCH}"
+        --port=3306 -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_BRANCH}"
     envFrom:
-    - sourceName: ns-qzchs
+    - sourceName: rds-mysql-root
       sourceKey: host
       targetKey: DB_HOST
-    - sourceName: ns-qzchs
+    - sourceName: rds-mysql-root
       sourceKey: port
       targetKey: DB_PORT
-    - sourceName: ns-qzchs
+    - sourceName: rds-mysql-root
       sourceKey: pass
       targetKey: DB_PASS
-    - sourceName: ns-qzchs
+    - sourceName: rds-mysql-root
       sourceKey: user
       targetKey: DB_USER
   - applyAppConfig:
