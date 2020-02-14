@@ -14,19 +14,19 @@ stages:
         - mysqldump --no-create-db master > /tmp/export.sql
         - mysql -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_BRANCH}"
         - mysql ${CICD_GIT_BRANCH} < /tmp/export.sql
-    envFrom:
-    - sourceName: rds-mysql-root
-      sourceKey: host
-      targetKey: MYSQL_HOST
-    - sourceName: rds-mysql-root
-      sourceKey: port
-      targetKey: MYSQL_TCP_PORT
-    - sourceName: rds-mysql-root
-      sourceKey: pass
-      targetKey: MYSQL_PWD
-    - sourceName: rds-mysql-root
-      sourceKey: user
-      targetKey: USER
+      envFrom:
+      - sourceName: rds-mysql-root
+        sourceKey: host
+        targetKey: MYSQL_HOST
+      - sourceName: rds-mysql-root
+        sourceKey: port
+        targetKey: MYSQL_TCP_PORT
+      - sourceName: rds-mysql-root
+        sourceKey: pass
+        targetKey: MYSQL_PWD
+      - sourceName: rds-mysql-root
+        sourceKey: user
+        targetKey: USER
   - applyAppConfig:
       catalogTemplate: cattle-global-data:devpanel-catalog-php-fpm
       version: 1.0.3
