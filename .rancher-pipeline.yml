@@ -9,11 +9,7 @@ stages:
   steps:
   - runScriptConfig:
       image: mysql:5.7
-      shellScript:
-        - mysql -e "CREATE DATABASE IF NOT EXISTS master"
-        - mysqldump --no-create-db master > /tmp/export.sql
-        - mysql -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_BRANCH}"
-        - mysql ${CICD_GIT_BRANCH} < /tmp/export.sql
+      shellScript: "cd /tmp"
       envFrom:
       - sourceName: rds-mysql-root
         sourceKey: host
