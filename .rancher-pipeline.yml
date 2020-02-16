@@ -10,10 +10,10 @@ stages:
   - runScriptConfig:
       image: mysql:5.7
       shellScript: |-
-        mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password='${MYSQL_PWD}' -e "CREATE DATABASE IF NOT EXISTS master"
-        mysqldump --host=${MYSQL_HOST} --user=${MYSQL_USER} --password='${MYSQL_PWD}' --no-create-db master > /tmp/export.sql
-        mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password='${MYSQL_PWD}' -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_BRANCH}"
-        mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password='${MYSQL_PWD}' ${CICD_GIT_BRANCH} < /tmp/export.sql
+        mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} -e "CREATE DATABASE IF NOT EXISTS master"
+        mysqldump --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} --no-create-db master > /tmp/export.sql
+        mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_BRANCH}"
+        mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} ${CICD_GIT_BRANCH} < /tmp/export.sql
     envFrom:
     - sourceName: rds-mysql-root
       sourceKey: host
