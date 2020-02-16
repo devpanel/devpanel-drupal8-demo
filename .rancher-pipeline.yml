@@ -11,7 +11,8 @@ stages:
       name: 'create master db'
       image: mysql:5.7
       shellScript: |-
-        mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} -e "CREATE DATABASE IF NOT EXISTS master"
+        export MYSQL_PIPELINE=$(echo '${CICD_PIPELINE_ID}'| tr -d '-')
+        mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_PIPELINE}_master"
     envFrom:
     - sourceName: rds-mysql-root
       sourceKey: host
@@ -29,9 +30,11 @@ stages:
       name: 'Deply from master db'
       image: mysql:5.7
       shellScript: |-
-        mysqldump --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} --no-create-db master > /tmp/export.sql
-        mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_BRANCH}"
-        mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} ${CICD_GIT_BRANCH} < /tmp/export.sql
+        export MYSQL_PIPELINE=$(echo '${CICD_PIPELINE_ID}'| tr -d '-')
+        mysqldump --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} --no-create-db ${MYSQL_PIPELINE}_master > /tmp/export.sql
+        mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} -e "DROP DATABASE ${MYSQL_PIPELINE}_${CICD_GIT_BRANCH}"
+        mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_PIPELINE}_${CICD_GIT_BRANCH}"
+        mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} ${MYSQL_PIPELINE}_${CICD_GIT_BRANCH} < /tmp/export.sql
     envFrom:
     - sourceName: rds-mysql-root
       sourceKey: host
