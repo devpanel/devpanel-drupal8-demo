@@ -10,10 +10,12 @@ stages:
   - runScriptConfig:
       image: mysql:5.7
       shellScript: |-
-        mysql --user=${MYSQL_USER} -e "CREATE DATABASE IF NOT EXISTS master"
-        mysqldump -user=${MYSQL_USER} --no-create-db master > /tmp/export.sql
-        mysql -user=${MYSQL_USER} -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_BRANCH}"
-        mysql -user=${MYSQL_USER} ${CICD_GIT_BRANCH} < /tmp/export.sql
+        sudo apt-get install expect
+        echo $MYSQL_PWD | unbuffer -p mysql_config_editor set --login-path=rds --host=${MYSQL_HOST} --user=${MYSQL_USER} --password
+        mysql --login-path=rds -e "CREATE DATABASE IF NOT EXISTS master"
+        mysqldump --login-path=rds --no-create-db master > /tmp/export.sql
+        mysql --login-path=rds -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_BRANCH}"
+        mysql --login-path=rds ${CICD_GIT_BRANCH} < /tmp/export.sql
     envFrom:
     - sourceName: rds-mysql-root
       sourceKey: host
