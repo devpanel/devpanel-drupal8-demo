@@ -7,10 +7,28 @@ stages:
       tag: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}:${CICD_GIT_COMMIT}
 - name: deploy
   steps:
-  - runScriptConfig:
+    - runScriptConfig:
+      name: 'create master db'
       image: mysql:5.7
       shellScript: |-
         mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} -e "CREATE DATABASE IF NOT EXISTS master"
+    envFrom:
+    - sourceName: rds-mysql-root
+      sourceKey: host
+      targetKey: MYSQL_HOST
+    - sourceName: rds-mysql-root
+      sourceKey: port
+      targetKey: MYSQL_TCP_PORT
+    - sourceName: rds-mysql-root
+      sourceKey: pass
+      targetKey: MYSQL_PWD
+    - sourceName: rds-mysql-root
+      sourceKey: user
+      targetKey: MYSQL_USER
+  - runScriptConfig:
+      name: 'Deply from master db'
+      image: mysql:5.7
+      shellScript: |-
         mysqldump --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} --no-create-db master > /tmp/export.sql
         mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_BRANCH}"
         mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} ${CICD_GIT_BRANCH} < /tmp/export.sql
