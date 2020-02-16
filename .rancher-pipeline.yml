@@ -50,6 +50,7 @@ stages:
         exclude:
         - master
 - name: deploy
+  steps:
   - applyAppConfig:
       catalogTemplate: cattle-global-data:devpanel-catalog-php-fpm
       version: 1.0.3
