@@ -11,7 +11,7 @@ stages:
       name: 'create master db'
       image: mysql:5.7
       shellScript: |-
-        export MYSQL_PIPELINE=$(echo '${CICD_PIPELINE_ID}'| tr -d '-')
+        export MYSQL_PIPELINE=$(echo "${CICD_PIPELINE_ID}" | tr -d '-')
         mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_PIPELINE}_master"
     envFrom:
     - sourceName: rds-mysql-root
@@ -30,7 +30,7 @@ stages:
       name: 'Deply from master db'
       image: mysql:5.7
       shellScript: |-
-        export MYSQL_PIPELINE=$(echo '${CICD_PIPELINE_ID}'| tr -d '-')
+        export MYSQL_PIPELINE=$(echo "${CICD_PIPELINE_ID}"" | tr -d '-')
         mysqldump --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} --no-create-db ${MYSQL_PIPELINE}_master > /tmp/export.sql
         mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} -e "DROP DATABASE ${MYSQL_PIPELINE}_${CICD_GIT_BRANCH}"
         mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_PIPELINE}_${CICD_GIT_BRANCH}"
