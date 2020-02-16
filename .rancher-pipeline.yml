@@ -27,6 +27,10 @@ stages:
     - sourceName: rds-mysql-root
       sourceKey: user
       targetKey: MYSQL_USER
+    when:
+      branch:
+        exclude:
+        - master
   - applyAppConfig:
       catalogTemplate: cattle-global-data:devpanel-catalog-php-fpm
       version: 1.0.3
