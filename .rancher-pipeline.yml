@@ -16,16 +16,16 @@ stages:
         mysql --login-path=rds -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_BRANCH}"
         mysql --login-path=rds ${CICD_GIT_BRANCH} < /tmp/export.sql
     envFrom:
-    - sourceName: ns-qzchs
+    - sourceName: rds-mysql-root
       sourceKey: host
       targetKey: MYSQL_HOST
-    - sourceName: ns-qzchs
+    - sourceName: rds-mysql-root
       sourceKey: port
       targetKey: MYSQL_TCP_PORT
-    - sourceName: ns-qzchs
+    - sourceName: rds-mysql-root
       sourceKey: pass
       targetKey: MYSQL_PWD
-    - sourceName: ns-qzchs
+    - sourceName: rds-mysql-root
       sourceKey: user
       targetKey: MYSQL_USER
   - applyAppConfig:
