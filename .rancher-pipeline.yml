@@ -10,10 +10,10 @@ stages:
   - runScriptConfig:
       image: mysql:5.7
       shellScript: |-
-        mysql -u${MYSQL_USER} -e "CREATE DATABASE IF NOT EXISTS master"
-        mysqldump -u${MYSQL_USER} --no-create-db master > /tmp/export.sql
-        mysql -u${MYSQL_USER} -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_BRANCH}"
-        mysql -u${MYSQL_USER} ${CICD_GIT_BRANCH} < /tmp/export.sql
+        mysql --user=${MYSQL_USER} -e "CREATE DATABASE IF NOT EXISTS master"
+        mysqldump -user=${MYSQL_USER} --no-create-db master > /tmp/export.sql
+        mysql -user=${MYSQL_USER} -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_BRANCH}"
+        mysql -user=${MYSQL_USER} ${CICD_GIT_BRANCH} < /tmp/export.sql
     envFrom:
     - sourceName: rds-mysql-root
       sourceKey: host
