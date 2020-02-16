@@ -9,10 +9,12 @@ stages:
   steps:
   - runScriptConfig:
       image: mysql:5.7
-      shellScript: mysql -u${MYSQL_USER} -e "CREATE DATABASE IF NOT EXISTS master"
-#        mysqldump -h ${MYSQL_HOST} -u ${MYSQL_USER} -p ${MYSQL_PWD} -P ${MYSQL_TCP_PORT} --no-create-db master > /tmp/export.sql
-#        mysql -h ${MYSQL_HOST} -u ${MYSQL_USER} -p ${MYSQL_PWD} -P ${MYSQL_TCP_PORT} -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_BRANCH}"
-#        mysql -h ${MYSQL_HOST} -u ${MYSQL_USER} -p ${MYSQL_PWD} -P ${MYSQL_TCP_PORT} ${CICD_GIT_BRANCH} < /tmp/export.sql
+      shellScript: |-
+        export USER=${MYSQL_USER}
+        mysql -e "CREATE DATABASE IF NOT EXISTS master"
+        mysqldump --no-create-db master > /tmp/export.sql
+        mysql -e "CREATE DATABASE IF NOT EXISTS ${CICD_GIT_BRANCH}"
+        mysql ${CICD_GIT_BRANCH} < /tmp/export.sql
     envFrom:
     - sourceName: ns-qzchs
       sourceKey: host
