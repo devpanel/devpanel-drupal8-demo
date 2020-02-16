@@ -60,6 +60,7 @@ stages:
       answers:
         app.isdev: "true"
         database.enabled: "true"
+        test: ${MYSQL_HOST}
         image.registry: ${CICD_LOCAL_REGISTRY}
         image.repository: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}
         image.tag: ${CICD_GIT_COMMIT}
