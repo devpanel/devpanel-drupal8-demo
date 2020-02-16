@@ -59,12 +59,25 @@ stages:
       version: 1.0.3
       answers:
         app.isdev: "true"
-        database.enabled: "false"
+        database.enabled: "true"
         image.registry: ${CICD_LOCAL_REGISTRY}
         image.repository: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}
         image.tag: ${CICD_GIT_COMMIT}
         port: "3306"
       name: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
       targetNamespace: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
+    envFrom:
+    - sourceName: rds-mysql-root
+      sourceKey: host
+      targetKey: MYSQL_HOST
+    - sourceName: rds-mysql-root
+      sourceKey: port
+      targetKey: MYSQL_TCP_PORT
+    - sourceName: rds-mysql-root
+      sourceKey: pass
+      targetKey: MYSQL_PWD
+    - sourceName: rds-mysql-root
+      sourceKey: user
+      targetKey: MYSQL_USER
 timeout: 60
 notification: {}
