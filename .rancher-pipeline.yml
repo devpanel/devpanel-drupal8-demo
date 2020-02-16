@@ -5,9 +5,9 @@ stages:
       dockerfilePath: ./Dockerfile
       buildContext: .
       tag: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}:${CICD_GIT_COMMIT}
-- name: deploy
+- name: dbops
   steps:
-    - runScriptConfig:
+  - runScriptConfig:
       name: 'create master db'
       image: mysql:5.7
       shellScript: |-
@@ -49,6 +49,7 @@ stages:
       branch:
         exclude:
         - master
+- name: deploy
   - applyAppConfig:
       catalogTemplate: cattle-global-data:devpanel-catalog-php-fpm
       version: 1.0.3
