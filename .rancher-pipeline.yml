@@ -72,6 +72,6 @@ stages:
         image.tag: ${CICD_GIT_COMMIT}
         image.pullSecret: aws-registry
       name: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
-      targetNamespace: default
+      targetNamespace: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
 timeout: 60
 notification: {}
