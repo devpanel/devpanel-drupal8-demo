@@ -70,6 +70,7 @@ stages:
         image.registry: 602401143452.dkr.ecr.us-east-2.amazonaws.com
         image.repository: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}
         image.tag: ${CICD_GIT_COMMIT}
+        image.pullSecret: aws-registry
       name: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
       targetNamespace: default
 timeout: 60
