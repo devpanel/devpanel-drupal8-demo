@@ -6,7 +6,7 @@ stages:
       buildContext: .
       tag: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}:${CICD_GIT_COMMIT}
       pushRemote: true
-      registry: 127.0.0.1:34305
+      registry: 295857545527.dkr.ecr.us-east-2.amazonaws.com
 - name: dbops
   steps:
   - runScriptConfig:
