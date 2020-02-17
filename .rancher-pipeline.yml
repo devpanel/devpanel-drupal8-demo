@@ -5,10 +5,11 @@ stages:
       dockerfilePath: ./Dockerfile
       buildContext: .
       tag: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}:${CICD_GIT_COMMIT}
+      pushRemote: true
+      registry: 127.0.0.1:34305
 - name: dbops
   steps:
   - runScriptConfig:
-      name: 'create master db'
       image: mysql:5.7
       shellScript: |-
         export MYSQL_PIPELINE=$(echo "${CICD_PIPELINE_ID}" | tr -d '-')
@@ -30,7 +31,6 @@ stages:
       sourceKey: project
       targetKey: MYSQL_PROJECT
   - runScriptConfig:
-      name: 'Deply from master db'
       image: mysql:5.7
       shellScript: |-
         mysqldump --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} --no-create-db ${MYSQL_PROJECT}_master > /tmp/export.sql
@@ -63,14 +63,15 @@ stages:
       catalogTemplate: cattle-global-data:devpanel-catalog-php-fpm
       version: 1.0.3
       answers:
-        app.isdev: true
+        app.isdev: "true"
         app.pipeline: ${CICD_GIT_BRANCH}
-        database.enabled: true
+        database.enabled: "true"
         database.secret: rds-mysql-root
-        image.registry: ${CICD_LOCAL_REGISTRY}
+        image.pullSecret: aws-registry
+        image.registry: 295857545527.dkr.ecr.us-east-2.amazonaws.com
         image.repository: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}
         image.tag: ${CICD_GIT_COMMIT}
       name: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
-      targetNamespace: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
+      targetNamespace: default
 timeout: 60
 notification: {}
