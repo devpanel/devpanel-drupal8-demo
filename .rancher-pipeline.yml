@@ -65,7 +65,7 @@ stages:
         app.pipeline: ${CICD_GIT_BRANCH}
         database.enabled: "true"
         database.secret: rds-mysql-root
-        image.registry: 602401143452.dkr.ecr.us-east-2.amazonaws.com
+        image.registry: ${CICD_LOCAL_REGISTRY}
         image.repository: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}
         image.tag: ${CICD_GIT_COMMIT}
         image.pullSecret: pipeline-docker-registry
