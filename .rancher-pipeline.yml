@@ -77,7 +77,7 @@ branch:
   - master
   - develop
   - release
-  - F*
+  - f*
   exclude:
   - '*_*'
   - '*/*'
