@@ -77,4 +77,5 @@ branch:
   - master
   - develop
   - release
+  - f_*
 notification: {}
