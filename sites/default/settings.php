@@ -788,3 +788,5 @@ $databases['default']['default'] = [
    'prefix' => '',
    'username' => getenv('DB_USER'),
   ];
+
+  $settings['hash_salt'] = '610f7875a8aa2ac2f7cca929577719a5'
