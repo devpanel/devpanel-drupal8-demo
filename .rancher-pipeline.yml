@@ -5,18 +5,70 @@ stages:
       dockerfilePath: ./Dockerfile
       buildContext: .
       tag: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}:${CICD_GIT_COMMIT}
+- name: dbops
+  steps:
+  - runScriptConfig:
+      image: mysql:5.7
+      shellScript: |-
+        export MYSQL_PIPELINE=$(echo "${CICD_PIPELINE_ID}" | tr -d '-')
+        mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_PROJECT}_master"
+    envFrom:
+    - sourceName: rds-mysql-root
+      sourceKey: host
+      targetKey: MYSQL_HOST
+    - sourceName: rds-mysql-root
+      sourceKey: port
+      targetKey: MYSQL_TCP_PORT
+    - sourceName: rds-mysql-root
+      sourceKey: pass
+      targetKey: MYSQL_PWD
+    - sourceName: rds-mysql-root
+      sourceKey: user
+      targetKey: MYSQL_USER
+    - sourceName: rds-mysql-root
+      sourceKey: project
+      targetKey: MYSQL_PROJECT
+  - runScriptConfig:
+      image: mysql:5.7
+      shellScript: |-
+        mysqldump --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} --no-create-db ${MYSQL_PROJECT}_master > /tmp/export.sql
+        mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} -e "DROP DATABASE IF EXISTS ${MYSQL_PROJECT}_${CICD_GIT_BRANCH}"
+        mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_PROJECT}_${CICD_GIT_BRANCH}"
+        mysql --host=${MYSQL_HOST} --user=${MYSQL_USER} --password=${MYSQL_PWD} ${MYSQL_PROJECT}_${CICD_GIT_BRANCH} < /tmp/export.sql
+    envFrom:
+    - sourceName: rds-mysql-root
+      sourceKey: host
+      targetKey: MYSQL_HOST
+    - sourceName: rds-mysql-root
+      sourceKey: port
+      targetKey: MYSQL_TCP_PORT
+    - sourceName: rds-mysql-root
+      sourceKey: pass
+      targetKey: MYSQL_PWD
+    - sourceName: rds-mysql-root
+      sourceKey: user
+      targetKey: MYSQL_USER
+    - sourceName: rds-mysql-root
+      sourceKey: project
+      targetKey: MYSQL_PROJECT
+    when:
+      branch:
+        exclude:
+        - master
 - name: deploy
   steps:
   - applyAppConfig:
       catalogTemplate: cattle-global-data:devpanel-catalog-php-fpm
-      version: 1.0.2
+      version: 1.0.3
       answers:
         app.isdev: "true"
-        database.enabled: "false"
-        image.registry: 127.0.0.1:34305
+        app.pipeline: ${CICD_GIT_BRANCH}
+        database.enabled: "true"
+        database.secret: rds-mysql-root
+        image.registry: ${CICD_LOCAL_REGISTRY}
         image.repository: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}
         image.tag: ${CICD_GIT_COMMIT}
-        port: "3306"
+        image.pullSecret: pipeline-docker-registry
       name: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
       targetNamespace: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
 timeout: 60
