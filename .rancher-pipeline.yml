@@ -61,15 +61,20 @@ stages:
       catalogTemplate: cattle-global-data:devpanel-catalog-php-fpm
       version: 1.0.3
       answers:
-        app.isdev: true
-        app.pipeline: "${CICD_GIT_BRANCH}"
-        database.enabled: true
-        database.secret: "rds-mysql-root"
-        image.registry: "${CICD_LOCAL_REGISTRY}"
-        image.repository: "${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}"
-        image.tag: "${CICD_GIT_COMMIT}"
+        app.isdev: "true"
+        app.pipeline: ${CICD_GIT_BRANCH}
+        database.enabled: "true"
+        database.secret: rds-mysql-root
         image.pullSecret: pipeline-docker-registry
+        image.registry: ${CICD_LOCAL_REGISTRY}
+        image.repository: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}
+        image.tag: ${CICD_GIT_COMMIT}
       name: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
       targetNamespace: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
-timeout: 60
+timeout: 10
+branch:
+  include:
+  - master
+  - develop
+  - release
 notification: {}
