@@ -791,4 +791,4 @@ $databases['default']['default'] = [
 
 $settings['hash_salt'] = '610f7875a8aa2ac2f7cca929577719a5';
 
-$settings['file_public_path'] = '/var/www/html/sites/default/files';
+$settings['file_public_path'] = 'sites/default/files';
