@@ -59,7 +59,7 @@ stages:
   steps:
   - applyAppConfig:
       catalogTemplate: cattle-global-data:devpanel-catalog-php-fpm
-      version: 1.0.3
+      version: 1.0.4
       answers:
         app.isdev: "true"
         app.pipeline: ${CICD_GIT_BRANCH}
@@ -69,6 +69,8 @@ stages:
         image.registry: ${CICD_LOCAL_REGISTRY}
         image.repository: ${CICD_GIT_REPO_NAME}/${CICD_GIT_BRANCH}
         image.tag: ${CICD_GIT_COMMIT}
+        nfs.enabled: "true"
+        nfs.server: fs-1d7f9465.efs.us-east-2.amazonaws.com
       name: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
       targetNamespace: ${CICD_PIPELINE_ID}-${CICD_GIT_BRANCH}
 timeout: 10
